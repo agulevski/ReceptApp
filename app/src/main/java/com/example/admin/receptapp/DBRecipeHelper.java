@@ -11,20 +11,24 @@ import android.util.Log;
 
 public class DBRecipeHelper extends SQLiteOpenHelper {
 
-    public static final String TABLE_COMMENTS = "comments";
-    public static final String COLUMN_ID = "_id";
-    public static final String COLUMN_COMMENT = "comment";
+    public static final String TABLE_RECIPES = "recipes";
+    public static final String COLUMN_ID = "id";
+    public static final String COLUMN_TITLE = "title";
+    public static final String COLUMN_DESCRIPTION = "description";
+    public static final String COLUMN_INGREDIENTS = "ingredients";
+    public static final String COLUMN_INSTRUCTIONS = "instructions";
 
-    private static final String DATABASE_NAME = "commments.db";
+    private static final String DATABASE_NAME = "recipes.db";
     private static final int DATABASE_VERSION = 1;
 
     // Database creation sql statement
     private static final String DATABASE_CREATE = "create table "
-            + TABLE_COMMENTS + "( " + COLUMN_ID
-            + " integer primary key autoincrement, " + COLUMN_COMMENT
-            + " text not null);";
+            + TABLE_RECIPES + "( " + COLUMN_ID
+            + " integer primary key autoincrement, " + COLUMN_TITLE
+            + " text not null, " + COLUMN_DESCRIPTION + "text not null, "
+            + COLUMN_INGREDIENTS + "text not null, " + COLUMN_INSTRUCTIONS + "text not null);";
 
-    public MySQLiteHelper(Context context) {
+    public DBRecipeHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
@@ -38,7 +42,7 @@ public class DBRecipeHelper extends SQLiteOpenHelper {
         Log.w(DBRecipeHelper.class.getName(),
                 "Upgrading database from version " + oldVersion + " to "
                         + newVersion + ", which will destroy all old data");
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_COMMENTS);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_RECIPES);
         onCreate(db);
     }
 
