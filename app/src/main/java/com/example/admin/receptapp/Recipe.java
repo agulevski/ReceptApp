@@ -6,6 +6,7 @@ package com.example.admin.receptapp;
 
 public class Recipe {
     private int id;
+    private String hej;
     private String title;
     private String description;
     private String ingredients;
@@ -13,6 +14,8 @@ public class Recipe {
 
     public int getId() { return id;}
     public void setId(int id) {this.id = id;}
+
+    public String getHej(){ return hej;}
 
     public String getTitle(){
         return title;

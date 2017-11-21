@@ -5,6 +5,10 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +30,9 @@ public class RecipesDataSource {
 
     public RecipesDataSource(Context context) {
         dbHelper = new DBRecipeHelper(context);
+        //insertFromFile(context, R.raw.init);
     }
+
 
     public void open() throws SQLException {
         database = dbHelper.getWritableDatabase();
@@ -35,6 +41,25 @@ public class RecipesDataSource {
     public void close() {
         dbHelper.close();
     }
+
+
+    public int insertFromFile(Context context, int resourceId) throws IOException {
+        int result = 0;
+        //Open resource
+        InputStream insertStream = context.getResources().openRawResource(resourceId);
+        BufferedReader insertReader = new BufferedReader(new InputStreamReader(insertStream));
+
+        while (insertReader.ready()){
+            String insertStatement = insertReader.readLine();
+            database.execSQL(insertStatement);
+            result++;
+
+        }
+        insertReader.close();
+
+        return result;
+    }
+
 
     public Recipe createRecipe(String recipe) {
         ContentValues values = new ContentValues();
@@ -82,6 +107,9 @@ public class RecipesDataSource {
         Recipe recipe = new Recipe();
         recipe.setId(cursor.getInt(0));
         recipe.setTitle(cursor.getString(1));
+        recipe.setDescription(cursor.getString(2));
+        recipe.setIngredients(cursor.getString(3));
+        recipe.setInstructions(cursor.getString(4));
         return recipe;
     }
 }

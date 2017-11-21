@@ -3,7 +3,6 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/ReceptApp.iml" filepath="$PROJECT_DIR$/ReceptApp.iml" />
-      <module fileurl="file://C:\ReceptApp\ReceptApp.iml" filepath="C:\ReceptApp\ReceptApp.iml" />
       <module fileurl="file://C:\Users\admin\ReceptApp\.idea\ReceptApp.iml" filepath="C:\Users\admin\ReceptApp\.idea\ReceptApp.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
