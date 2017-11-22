@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -15,9 +16,11 @@ import java.util.List;
 
 /**
  * Created by admin on 2017-11-15.
+ *
+ *
  */
 
-public class RecipesDataSource {
+public class RecipesDataSource implements RecipeStore {
 
     // Database fields
     private SQLiteDatabase database;
@@ -30,11 +33,10 @@ public class RecipesDataSource {
 
     public RecipesDataSource(Context context) {
         dbHelper = new DBRecipeHelper(context);
-        //insertFromFile(context, R.raw.init);
     }
 
 
-    public void open() throws SQLException {
+    public void open() {
         database = dbHelper.getWritableDatabase();
     }
 
@@ -51,10 +53,15 @@ public class RecipesDataSource {
 
         while (insertReader.ready()){
             String insertStatement = insertReader.readLine();
-            database.execSQL(insertStatement);
+            try {
+                database.execSQL(insertStatement);
+            }catch (SQLiteException sql){
+                sql.printStackTrace();
+            }
             result++;
 
         }
+        //Close reader
         insertReader.close();
 
         return result;
@@ -79,6 +86,8 @@ public class RecipesDataSource {
         return newRecipe;
     }
 
+    public void storeRecipe(Recipe recipe){}
+
     public void deleteRecipe(Recipe recipe) {
         int id = recipe.getId();
         System.out.println("Recipe deleted with id: " + id);
@@ -89,10 +98,13 @@ public class RecipesDataSource {
     public List<Recipe> getAllRecipes() {
         List<Recipe> recipes = new ArrayList<>();
 
+        //Query DB for all recipes in the table
         Cursor cursor = database.query(DBRecipeHelper.TABLE_RECIPES,
                 allColumns, null, null, null, null, null);
 
         cursor.moveToFirst();
+
+        //Loop through cursor, save each row as new recipe
         while (!cursor.isAfterLast()) {
             Recipe recipe = cursorToRecipe(cursor);
             recipes.add(recipe);
@@ -104,12 +116,18 @@ public class RecipesDataSource {
     }
 
     private Recipe cursorToRecipe(Cursor cursor) {
-        Recipe recipe = new Recipe();
-        recipe.setId(cursor.getInt(0));
-        recipe.setTitle(cursor.getString(1));
-        recipe.setDescription(cursor.getString(2));
-        recipe.setIngredients(cursor.getString(3));
-        recipe.setInstructions(cursor.getString(4));
-        return recipe;
+        //Create a new recipe from cursor values
+        Recipe newRecipe = new Recipe();
+        newRecipe.setId(cursor.getInt(0));
+        newRecipe.setTitle(cursor.getString(1));
+        newRecipe.setDescription(cursor.getString(2));
+        newRecipe.setIngredients(cursor.getString(3));
+        newRecipe.setInstructions(cursor.getString(4));
+        return newRecipe;
+    }
+
+    public List<Recipe> getRecipeByIngredients(){
+        List<Recipe> recipesByIngredients = new ArrayList<>();
+        return recipesByIngredients;
     }
 }

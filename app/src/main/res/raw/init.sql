@@ -1,20 +1,3 @@
 PRAGMA encoding = "UTF-8";
 
-INSERT INTO recipes (title,description,ingredients,instructions)
-VALUES ('Gratinerad kyckling med ris', 'Ugnsgratinerad kyckling som serveras med fluffigt ris. Äts tillsammans med en krämig sås gjord på basilika. Morötter och cosmopolitansallad ger en fin krispighet till maträtten. Bon appétit!', '4 kycklingfiléer
-1 tsk olivolja
-salt och peppar
-2 1/2 dl matlagningsgrädde
-1/2 dl ketchup
-1 msk senap
-1/2 kruka basilika
-Tillbehör
-4 port ris
-1/2 cosmopolitansallad
-3 morötter
-', 'Sätt ugnen på 225°C.
-Stek kycklingen i olja i en stekpanna ca 3 minuter på varje sida. Krydda med salt och peppar. Lägg kycklingen i en ugnssäker form.ER
-Koka upp grädden med ketchup och senap. Grovhacka basilikan och rör ner den i såsen, smaka av med salt och peppar. Häll såsen i formen och sätt in mitt i ugnen tills innertemperaturen är 72°C, ca 15 minuter.
-Tillbehör: Koka riset enligt anvisningen på förpackningen.
-Lossa bladen från salladen. Skala och skär morötterna i stavar.
-Servera kycklingen med ris, sallad och morötter.');
+INSERT INTO recipes (title,description,ingredients,instructions)VALUES ('Gratinerad kyckling med ris', 'Ugnsgratinerad kyckling som serveras med fluffigt ris. ï¿½ts tillsammans med en krï¿½mig sï¿½s gjord pï¿½ basilika. Morï¿½tter och cosmopolitansallad ger en fin krispighet till matrï¿½tten. Bon appï¿½tit!', '4 kycklingfilï¿½er 1 tsk olivolja salt och peppar 2 1/2 dl matlagningsgrï¿½dde 1/2 dl ketchup 1 msk senap 1/2 kruka basilika Tillbehï¿½r 4 port ris 1/2 cosmopolitansallad 3 morï¿½tter', 'Sï¿½tt ugnen pï¿½ 225ï¿½C. Stek kycklingen i olja i en stekpanna ca 3 minuter pï¿½ varje sida. Krydda med salt och peppar. Lï¿½gg kycklingen i en ugnssï¿½ker form.ER Koka upp grï¿½dden med ketchup och senap. Grovhacka basilikan och rï¿½r ner den i sï¿½sen, smaka av med salt och peppar. Hï¿½ll sï¿½sen i formen och sï¿½tt in mitt i ugnen tills innertemperaturen ï¿½r 72ï¿½C, ca 15 minuter. Tillbehï¿½r: Koka riset enligt anvisningen pï¿½ fï¿½rpackningen. Lossa bladen frï¿½n salladen. Skala och skï¿½r morï¿½tterna i stavar. Servera kycklingen med ris, sallad och morï¿½tter.');

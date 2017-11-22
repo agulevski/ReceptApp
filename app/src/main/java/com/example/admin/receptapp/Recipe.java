@@ -2,11 +2,12 @@ package com.example.admin.receptapp;
 
 /**
  * Created by admin on 2017-11-13.
+ *
+ * Contains parameters for a Recipe and overrides toString();
  */
 
 public class Recipe {
     private int id;
-    private String hej;
     private String title;
     private String description;
     private String ingredients;
@@ -14,8 +15,6 @@ public class Recipe {
 
     public int getId() { return id;}
     public void setId(int id) {this.id = id;}
-
-    public String getHej(){ return hej;}
 
     public String getTitle(){
         return title;
@@ -37,7 +36,10 @@ public class Recipe {
     }
     public void setInstructions(String instructions) {this.instructions = instructions;}
 
-    /*public String getImage(){
-        return image;
-    }*/
+    @Override
+    public String toString(){
+        return title + description + ingredients + instructions;
+    }
+
+
 }
