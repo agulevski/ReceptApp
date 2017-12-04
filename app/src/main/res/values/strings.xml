@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">ReceptApp</string>
+    <string name="queryHint">Skriv in dina ingredienser här</string>
 </resources>

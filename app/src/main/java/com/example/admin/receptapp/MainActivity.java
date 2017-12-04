@@ -1,8 +1,10 @@
 package com.example.admin.receptapp;
 
+import android.content.Intent;
 import android.database.sqlite.SQLiteException;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.widget.TextView;
 import java.io.IOException;
 import java.sql.SQLException;
@@ -66,6 +68,10 @@ public class MainActivity extends AppCompatActivity {
     protected void onPause() {
         datasource.close();
         super.onPause();
+    }
+    public void startInputRecipesActivity(View view){
+        Intent intent = new Intent(this, InputRecipesActivity.class);
+        startActivity(intent);
     }
 
 }

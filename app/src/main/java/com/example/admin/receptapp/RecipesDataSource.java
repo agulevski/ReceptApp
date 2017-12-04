@@ -35,9 +35,9 @@ public class RecipesDataSource implements RecipeStore {
         dbHelper = new DBRecipeHelper(context);
     }
 
-
-    public void open(){
+    public SQLiteDatabase open(){
         database = dbHelper.getWritableDatabase();
+        return database;
     }
 
     public void close(){
@@ -126,8 +126,19 @@ public class RecipesDataSource implements RecipeStore {
         return newRecipe;
     }
 
-    public List<Recipe> getRecipeByIngredients(){
+    public List<Recipe> getRecipeByIngredients(CharSequence query){
         List<Recipe> recipesByIngredients = new ArrayList<>();
+        String[] selectionArgs = {query.toString(), "%"};
+        Cursor cursor = database.query(DBRecipeHelper.TABLE_RECIPES, allColumns,
+                null, selectionArgs, null, null, null);
+        cursor.moveToFirst();
+
+        while(!cursor.isAfterLast()) {
+            Recipe recipe = cursorToRecipe(cursor);
+            recipesByIngredients.add(recipe);
+            cursor.moveToNext();
+        }
+        cursor.close();
         return recipesByIngredients;
     }
 }
