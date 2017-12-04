@@ -1,5 +1,6 @@
 package com.example.admin.receptapp;
 
+import android.database.sqlite.SQLiteException;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
@@ -15,12 +16,12 @@ public class MainActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
-        textView = (TextView) (findViewById(R.id.text));
+        textView = (findViewById(R.id.text));
 
         datasource = new RecipesDataSource(this);
         try {
             datasource.open();
-        } catch (SQLException e) {
+        } catch (SQLiteException e) {
             e.printStackTrace();
         }
         try {
@@ -55,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         try {
             datasource.open();
-        } catch (SQLException e) {
+        } catch (SQLiteException e) {
             e.printStackTrace();
         }
         super.onResume();

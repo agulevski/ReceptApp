@@ -1,5 +1,6 @@
 package com.example.admin.receptapp;
 
+import android.database.SQLException;
 import android.database.sqlite.SQLiteException;
 
 import java.util.List;
@@ -13,6 +14,6 @@ public interface RecipeStore {
     List<Recipe> getRecipeByIngredients();
     void storeRecipe(Recipe recipe);
     void deleteRecipe(Recipe recipe);
-    void open() throws SQLiteException;
-    void close() throws SQLiteException;
+    void open() throws SQLException;
+    void close();
 }

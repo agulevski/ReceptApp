@@ -25,7 +25,7 @@ public class RecipesDataSource implements RecipeStore {
     // Database fields
     private SQLiteDatabase database;
     private DBRecipeHelper dbHelper;
-    private String[] allColumns = { DBRecipeHelper.COLUMN_ID,
+    private String[] allColumns = {DBRecipeHelper.COLUMN_ID,
             DBRecipeHelper.COLUMN_TITLE,
             DBRecipeHelper.COLUMN_DESCRIPTION,
             DBRecipeHelper.COLUMN_INGREDIENTS,
@@ -36,11 +36,11 @@ public class RecipesDataSource implements RecipeStore {
     }
 
 
-    public void open() {
+    public void open(){
         database = dbHelper.getWritableDatabase();
     }
 
-    public void close() {
+    public void close(){
         dbHelper.close();
     }
 
@@ -97,11 +97,11 @@ public class RecipesDataSource implements RecipeStore {
 
     public List<Recipe> getAllRecipes() {
         List<Recipe> recipes = new ArrayList<>();
+        System.out.println("hehehh");
 
         //Query DB for all recipes in the table
         Cursor cursor = database.query(DBRecipeHelper.TABLE_RECIPES,
                 allColumns, null, null, null, null, null);
-
         cursor.moveToFirst();
 
         //Loop through cursor, save each row as new recipe

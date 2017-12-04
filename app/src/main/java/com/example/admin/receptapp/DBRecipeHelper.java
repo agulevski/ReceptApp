@@ -13,19 +13,19 @@ import android.util.Log;
 public class DBRecipeHelper extends SQLiteOpenHelper {
 
     public static final String TABLE_RECIPES = "recipes";
-    public static final String COLUMN_ID = "_id";
+    public static final String COLUMN_ID = "id";
     public static final String COLUMN_TITLE = "title";
     public static final String COLUMN_DESCRIPTION = "description";
     public static final String COLUMN_INGREDIENTS = "ingredients";
     public static final String COLUMN_INSTRUCTIONS = "instructions";
 
     private static final String DATABASE_NAME = "recipes.db";
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
 
     // Database creation sql statement
     private static final String DATABASE_CREATE = "create table "
             + TABLE_RECIPES
-            + "( " + COLUMN_ID + " integer primary key autoincrement, "
+            + " (" + COLUMN_ID + " integer primary key autoincrement, "
             + COLUMN_TITLE + " text not null, "
             + COLUMN_DESCRIPTION + " text not null, "
             + COLUMN_INGREDIENTS + " text not null, "
