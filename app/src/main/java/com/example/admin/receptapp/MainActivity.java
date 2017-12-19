@@ -26,12 +26,17 @@ public class MainActivity extends AppCompatActivity {
         } catch (SQLiteException e) {
             e.printStackTrace();
         }
+
+        displayRecipes();
+
+    }
+
+    public void initDB(){
         try {
             datasource.insertFromFile(this, R.raw.init);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        displayRecipes();
 
     }
 

@@ -36,7 +36,7 @@ public class RecipesDataSource implements RecipeStore {
     }
 
     public SQLiteDatabase open(){
-        database = dbHelper.getWritableDatabase();
+        this.database = dbHelper.getWritableDatabase();
         return database;
     }
 
@@ -126,19 +126,25 @@ public class RecipesDataSource implements RecipeStore {
         return newRecipe;
     }
 
-    public List<Recipe> getRecipeByIngredients(CharSequence query){
-        List<Recipe> recipesByIngredients = new ArrayList<>();
-        String[] selectionArgs = {query.toString(), "%"};
-        Cursor cursor = database.query(DBRecipeHelper.TABLE_RECIPES, allColumns,
-                null, selectionArgs, null, null, null);
-        cursor.moveToFirst();
+    private Recipe cursorToTitle(Cursor cursor) {
+        //Create a new recipe from cursor values
+        Recipe newRecipe = new Recipe();
+        newRecipe.setTitle(cursor.getString(0));
+        return newRecipe;
+    }
 
-        while(!cursor.isAfterLast()) {
-            Recipe recipe = cursorToRecipe(cursor);
-            recipesByIngredients.add(recipe);
-            cursor.moveToNext();
+    public List<String> getRecipeByIngredients(CharSequence query){
+        List<String> recipesByIngredients = new ArrayList<>();
+       //Select ingredients by user input using LIKE
+       Cursor c = database.rawQuery("SELECT title FROM recipes WHERE ingredients LIKE '%" + query.toString() +"%'", null);
+        c.moveToFirst();
+
+        while(!c.isAfterLast()) {
+            Recipe recipe = cursorToTitle(c);
+            recipesByIngredients.add(recipe.getTitle());
+            c.moveToNext();
         }
-        cursor.close();
+        c.close();
         return recipesByIngredients;
     }
 }
