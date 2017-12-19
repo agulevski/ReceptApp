@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.example.admin.receptapp.InputRecipesActivity">
+
+
+    <ScrollView
+        android:layout_width="368dp"
+        android:layout_height="495dp"
+        tools:layout_editor_absoluteX="8dp"
+        tools:layout_editor_absoluteY="8dp"
+        android:fillViewport="true">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <SearchView
+                android:id="@+id/searchView"
+                android:layout_width="300dp"
+                android:layout_height="100dp"
+                android:layout_alignEnd="@+id/imageView"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/searchView"
+                android:queryHint="@string/queryHint"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="350dp"
+                android:layout_height="150dp"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/searchView"
+                app:srcCompat="@mipmap/pasta"
+                android:onClick="startShowRecipe"/>
+
+
+            <ImageView
+                android:id="@+id/imageView2"
+                android:layout_width="350dp"
+                android:layout_height="150dp"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/imageView"
+                app:srcCompat="@mipmap/pasta" />
+
+            <ImageView
+                android:id="@+id/imageView3"
+                android:layout_width="350dp"
+                android:layout_height="150dp"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/imageView2"
+                app:srcCompat="@mipmap/pasta" />
+
+            <ImageView
+                android:id="@+id/imageView4"
+                android:layout_width="350dp"
+                android:layout_height="150dp"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/imageView3"
+                app:srcCompat="@mipmap/pasta" />
+
+            <ImageView
+                android:id="@+id/imageView5"
+                android:layout_width="350dp"
+                android:layout_height="150dp"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/imageView4"
+                android:layout_marginTop="62dp"
+                app:srcCompat="@mipmap/pasta" />
+
+
+        </RelativeLayout>
+    </ScrollView>
+</android.support.constraint.ConstraintLayout>
