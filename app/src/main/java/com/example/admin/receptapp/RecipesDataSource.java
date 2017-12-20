@@ -97,7 +97,6 @@ public class RecipesDataSource implements RecipeStore {
 
     public List<Recipe> getAllRecipes() {
         List<Recipe> recipes = new ArrayList<>();
-        System.out.println("hehehh");
 
         //Query DB for all recipes in the table
         Cursor cursor = database.query(DBRecipeHelper.TABLE_RECIPES,
@@ -131,6 +130,15 @@ public class RecipesDataSource implements RecipeStore {
         Recipe newRecipe = new Recipe();
         newRecipe.setTitle(cursor.getString(0));
         return newRecipe;
+    }
+    //Get a single recipe with searchparam title
+    public Recipe getRecipe(CharSequence query){
+        Cursor c = database.rawQuery("SELECT * FROM recipes WHERE title = '" + query.toString()+"'", null);
+        c.moveToFirst();
+        Recipe recipe = cursorToRecipe(c);
+
+        c.close();
+        return recipe;
     }
 
     public List<String> getRecipeByIngredients(CharSequence query){

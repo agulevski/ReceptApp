@@ -15,9 +15,11 @@ import android.widget.Toast;
 
 import java.util.List;
 
-public class InputRecipesActivity extends ListActivity {
+public class InputRecipesActivity extends Activity {
     private RecipesDataSource datasource;
     SearchView inputView;
+    ListView listView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,12 +27,13 @@ public class InputRecipesActivity extends ListActivity {
         setContentView(R.layout.activity_input_recipes);
         datasource = new RecipesDataSource(this);
         SQLiteDatabase db = datasource.open();
-        ListView listView = (ListView)findViewById(R.id.listView);
-
+        listView = (ListView)findViewById(R.id.list);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                Intent intent = new Intent(this, RecipeInfoActivity.class);
+                Intent intent = new Intent(InputRecipesActivity.this, RecipeInfoActivity.class);
+                String recipe = String.valueOf(adapterView.getItemAtPosition(position));
+                intent.putExtra("recipe", recipe);
                 startActivity(intent);
             }
         });
@@ -42,8 +45,8 @@ public class InputRecipesActivity extends ListActivity {
         CharSequence inputStatement = inputView.getQuery();
         if(inputStatement!= "") {
             List<String> foundRecipes = datasource.getRecipeByIngredients(inputStatement);
-            ArrayAdapter<String> adapter = new ArrayAdapter<String> (getListView().getContext(), android.R.layout.simple_list_item_1, foundRecipes);
-            getListView().setAdapter(adapter);
+            ArrayAdapter<String> adapter = new ArrayAdapter<String> (this, android.R.layout.simple_list_item_1, foundRecipes);
+            listView.setAdapter(adapter);
         }else{
             Context context = getApplicationContext();
             CharSequence error = "Skriv in en ingrediens först";
