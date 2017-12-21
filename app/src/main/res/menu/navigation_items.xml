@@ -1,0 +1,14 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/action_home"
+        android:title="@string/home"
+        android:icon="@drawable/ic_action_home" />
+    <item android:id="@+id/action_search"
+        android:title="@string/search"
+        android:icon="@drawable/ic_action_search" />
+    <item android:id="@+id/action_addRecipe"
+        android:title="@string/addRecipe"
+        android:icon="@drawable/ic_action_addrecipe" />
+    <item android:id="@+id/action_favorites"
+        android:title="@string/favorites"
+        android:icon="@drawable/ic_action_favorites" />
+</menu>

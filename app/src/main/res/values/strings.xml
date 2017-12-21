@@ -1,4 +1,18 @@
 <resources>
     <string name="app_name">ReceptApp</string>
     <string name="queryHint">Skriv in dina ingredienser här</string>
+    <string name="home">Hem</string>
+    <string name="search">Sök</string>
+    <string name="addRecipe">Nytt recept</string>
+    <string name="favorites">Favoriter</string>
+    <string-array name="spinner_measures">
+        <item>Matsked</item>
+        <item>Tesked</item>
+        <item>Kryddmått</item>
+        <item>Deciliter</item>
+        <item>Milliliter</item>
+        <item>Gram</item>
+    </string-array>
+
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
