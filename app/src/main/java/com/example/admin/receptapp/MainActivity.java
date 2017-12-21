@@ -98,4 +98,10 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    public void startBrowseActivity(View view)
+    {
+        Intent intent = new Intent(MainActivity.this, BrowseActivity.class);
+        startActivity(intent);
+
+    }
 }
