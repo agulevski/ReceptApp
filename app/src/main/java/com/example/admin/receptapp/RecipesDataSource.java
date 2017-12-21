@@ -36,7 +36,7 @@ public class RecipesDataSource implements RecipeStore {
     }
 
     public SQLiteDatabase open(){
-        database = dbHelper.getWritableDatabase();
+        this.database = dbHelper.getWritableDatabase();
         return database;
     }
 
@@ -97,7 +97,6 @@ public class RecipesDataSource implements RecipeStore {
 
     public List<Recipe> getAllRecipes() {
         List<Recipe> recipes = new ArrayList<>();
-        System.out.println("hehehh");
 
         //Query DB for all recipes in the table
         Cursor cursor = database.query(DBRecipeHelper.TABLE_RECIPES,
@@ -126,19 +125,34 @@ public class RecipesDataSource implements RecipeStore {
         return newRecipe;
     }
 
-    public List<Recipe> getRecipeByIngredients(CharSequence query){
-        List<Recipe> recipesByIngredients = new ArrayList<>();
-        String[] selectionArgs = {query.toString(), "%"};
-        Cursor cursor = database.query(DBRecipeHelper.TABLE_RECIPES, allColumns,
-                null, selectionArgs, null, null, null);
-        cursor.moveToFirst();
+    private Recipe cursorToTitle(Cursor cursor) {
+        //Create a new recipe from cursor values
+        Recipe newRecipe = new Recipe();
+        newRecipe.setTitle(cursor.getString(0));
+        return newRecipe;
+    }
+    //Get a single recipe with searchparam title
+    public Recipe getRecipe(CharSequence query){
+        Cursor c = database.rawQuery("SELECT * FROM recipes WHERE title = '" + query.toString()+"'", null);
+        c.moveToFirst();
+        Recipe recipe = cursorToRecipe(c);
 
-        while(!cursor.isAfterLast()) {
-            Recipe recipe = cursorToRecipe(cursor);
-            recipesByIngredients.add(recipe);
-            cursor.moveToNext();
+        c.close();
+        return recipe;
+    }
+
+    public List<String> getRecipeByIngredients(CharSequence query){
+        List<String> recipesByIngredients = new ArrayList<>();
+       //Select ingredients by user input using LIKE
+       Cursor c = database.rawQuery("SELECT title FROM recipes WHERE ingredients LIKE '%" + query.toString() +"%'", null);
+        c.moveToFirst();
+
+        while(!c.isAfterLast()) {
+            Recipe recipe = cursorToTitle(c);
+            recipesByIngredients.add(recipe.getTitle());
+            c.moveToNext();
         }
-        cursor.close();
+        c.close();
         return recipesByIngredients;
     }
 }

@@ -12,7 +12,8 @@ import java.util.List;
 
 public interface RecipeStore {
     List<Recipe> getAllRecipes();
-    List<Recipe> getRecipeByIngredients(CharSequence query);
+    List<String> getRecipeByIngredients(CharSequence query);
+    Recipe getRecipe(CharSequence query);
     void storeRecipe(Recipe recipe);
     void deleteRecipe(Recipe recipe);
     SQLiteDatabase open() throws SQLException;
