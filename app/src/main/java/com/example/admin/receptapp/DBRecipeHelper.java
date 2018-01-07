@@ -24,29 +24,31 @@ public class DBRecipeHelper extends SQLiteOpenHelper {
     public static final String COLUMN_DESCRIPTION = "description";
     public static final String COLUMN_INGREDIENTS = "ingredients";
     public static final String COLUMN_INSTRUCTIONS = "instructions";
+    public static final String COLUMN_IMAGE_BLOB = "imgBlob";
+    public static final String COLUMN_IMAGE_BLOB_SMALL = "imgBlobSmall";
 
     private static final String DATABASE_NAME = "recipes.db";
-    private static final int DATABASE_VERSION = 2;
+    public static final int DATABASE_VERSION = 1;
 
     // Database creation sql statement
     private static final String DATABASE_CREATE = "create table "
             + TABLE_RECIPES
             + " (" + COLUMN_ID + " integer primary key autoincrement, "
-            + COLUMN_TITLE + " text not null, "
-            + COLUMN_DESCRIPTION + " text not null, "
-            + COLUMN_INGREDIENTS + " text not null, "
-            + COLUMN_INSTRUCTIONS + " text not null)";
+            + COLUMN_TITLE + " text, "
+            + COLUMN_DESCRIPTION + " text, "
+            + COLUMN_INGREDIENTS + " text, "
+            + COLUMN_INSTRUCTIONS + " text, "
+            + COLUMN_IMAGE_BLOB + " blob, "
+            + COLUMN_IMAGE_BLOB_SMALL + " blob)";
 
     public DBRecipeHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+
     }
 
     @Override
     public void onCreate(SQLiteDatabase database) {
         database.execSQL(DATABASE_CREATE);
-        MainActivity main = new MainActivity();
-        main.initDB();
-
 
     }
 

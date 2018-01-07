@@ -60,12 +60,17 @@ public class MainActivity extends AppCompatActivity {
         } catch (SQLiteException e) {
             e.printStackTrace();
         }
+        /*int i = DBRecipeHelper.DATABASE_VERSION;
+        if(DBRecipeHelper.DATABASE_VERSION>i)*/
+        initDB();
 
     }
 
     public void initDB(){
+        System.out.print("test");
         try {
             datasource.insertFromFile(this, R.raw.init);
+            datasource.insertImages(this);
         } catch (IOException e) {
             e.printStackTrace();
         }

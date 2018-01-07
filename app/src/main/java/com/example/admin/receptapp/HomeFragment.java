@@ -1,11 +1,13 @@
 package com.example.admin.receptapp;
 
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.List;
@@ -14,6 +16,7 @@ import java.util.List;
 public class HomeFragment extends Fragment {
     TextView textView;
     RecipesDataSource datasource;
+    ImageView imageView;
 
     public HomeFragment() {
 
@@ -44,6 +47,7 @@ public class HomeFragment extends Fragment {
 
 
     }
+
     public int displayRecipes(){
         int countRecipes = 0;
 

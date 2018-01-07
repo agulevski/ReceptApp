@@ -6,13 +6,21 @@
     <string name="addRecipe">Nytt recept</string>
     <string name="favorites">Favoriter</string>
     <string-array name="spinner_measures">
-        <item>Matsked</item>
-        <item>Tesked</item>
-        <item>Kryddmått</item>
-        <item>Deciliter</item>
-        <item>Milliliter</item>
+        <item>Msk</item>
+        <item>Tsk</item>
+        <item>Krm</item>
+        <item>Dl</item>
+        <item>Ml</item>
         <item>Gram</item>
     </string-array>
+    <string name="ingredients">Ingredienser</string>
+    <string name="hint_ingredients">Exempel: \n 2,5 dl socker \n 2 dl vetemjöl \n 2 ägg \n 4 msk kakao \n 0,5 tsk bakpulver</string>
+    <string name="title">Titel</string>
+    <string name="hint_title">Exempel: \n Hemmagjorda chokladmuffins</string>
+    <string name="instructions">Instruktioner</string>
+    <string name="hint_instructions">Exempel: \n Blanda mjöl och socker. \n Vispa ihop äggen och blanda i med mjölken.</string>
+    <string name="description">Beskrivning</string>
+    <string name="hint_description">Exempel: \n Goda chokladmuffins som passar perfekt till fredagsmyset.</string>
 
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

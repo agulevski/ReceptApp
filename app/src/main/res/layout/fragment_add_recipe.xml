@@ -1,24 +1,135 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.example.admin.receptapp.AddRecipeFragment">
 
     <LinearLayout
+        android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/hello_blank_fragment" />
 
-        <TextView
-            android:id="@+id/textView2"
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="TextView" />
+            android:layout_height="match_parent">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/tv_Title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginTop="16dp"
+                    android:text="@string/title"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/et_Title"
+                    android:layout_width="match_parent"
+                    android:layout_height="200px"
+                    android:layout_alignParentStart="true"
+                    android:layout_below="@+id/tv_Title"
+                    android:ems="10"
+                    android:hint="@string/hint_title"
+                    android:inputType="textPersonName"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/tv_Description"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_below="@+id/et_Title"
+                    android:text="@string/description"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/et_Description"
+                    style="@style/Widget.AppCompat.EditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_below="@+id/tv_Description"
+                    android:ems="10"
+                    android:hint="@string/hint_description"
+                    android:inputType="textCapSentences|textMultiLine"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/tv_Ingredients"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/et_Description"
+                    android:layout_centerHorizontal="true"
+                    android:text="@string/ingredients"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/et_Ingredients"
+                    style="@style/Widget.AppCompat.EditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="400px"
+                    android:layout_alignParentStart="true"
+                    android:layout_below="@+id/tv_Ingredients"
+                    android:ems="10"
+                    android:hint="@string/hint_ingredients"
+                    android:inputType="textCapSentences|textMultiLine"
+                    android:textSize="14sp" />
+
+
+                <TextView
+                    android:id="@+id/tvInstructions"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_below="@+id/et_Ingredients"
+                    android:hint="@string/instructions"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/et_Instructions"
+                    style="@style/Widget.AppCompat.EditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="400px"
+                    android:layout_alignParentStart="true"
+                    android:layout_below="@+id/tvInstructions"
+                    android:ems="10"
+                    android:hint="@string/hint_instructions"
+                    android:inputType="textCapSentences|textMultiLine"
+                    android:textSize="14sp" />
+
+                <ImageButton
+                    android:id="@+id/ib_SelectPhoto"
+                    android:layout_width="1000px"
+                    android:layout_height="400px"
+                    android:layout_below="@+id/et_Instructions"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="45dp"
+                    android:src="@android:drawable/ic_menu_camera" />
+
+                <ImageButton
+                    android:id="@+id/ib_AddRecipe"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_below="@+id/ib_SelectPhoto"
+                    android:layout_marginTop="14dp"
+                    android:background="@null"
+                    android:src="@drawable/ic_action_addrecipe" />
+
+            </RelativeLayout>
+        </ScrollView>
 
     </LinearLayout>
 
