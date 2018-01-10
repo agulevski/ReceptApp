@@ -10,6 +10,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 
 import java.io.IOException;
 
@@ -21,6 +22,7 @@ public class MainActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
+
         bottomNavigationView = (BottomNavigationView) (findViewById(R.id.navigation));
 
         bottomNavigationView.setOnNavigationItemSelectedListener
@@ -92,15 +94,6 @@ public class MainActivity extends AppCompatActivity {
         datasource.close();
         super.onPause();
     }
-    public void startInputRecipesActivity(View view){
-        Intent intent = new Intent(this, InputRecipesActivity.class);
-        startActivity(intent);
-    }
-    public void startBrowseActivity(View view)
-    {
-        Intent intent = new Intent(MainActivity.this, BrowseActivity.class);
-        startActivity(intent);
 
-    }
 
 }
