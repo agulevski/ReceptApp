@@ -46,14 +46,15 @@ public class SearchFragment extends Fragment {
     }
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        imageButton = (ImageButton) (getView().findViewById(R.id.imageButton));
+        imageButton = (getView().findViewById(R.id.imageButton));
         imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 handleInput(view);
             }
         });
-        listView = (ListView)getView().findViewById(R.id.list);
+        listView = getView().findViewById(R.id.list);
+        //Handle output when user clicks item in list (start RecipeInfoActivity)
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
@@ -68,18 +69,18 @@ public class SearchFragment extends Fragment {
     public void handleInput(View view){
         inputView = (getView().findViewById(R.id.searchView));
         CharSequence inputStatement = inputView.getQuery();
-        if(inputStatement!= "") {
+        //if(inputStatement!= "") {
             List<String> foundRecipes = datasource.getRecipeByIngredients(inputStatement);
             ArrayAdapter<String> adapter = new ArrayAdapter<String> (getActivity(), android.R.layout.simple_list_item_1, foundRecipes);
             listView.setAdapter(adapter);
-        }else{
+        /*}else{
             Context context = getActivity();
             CharSequence error = "Skriv in en ingrediens först";
             int duration = Toast.LENGTH_SHORT;
             Toast errorMessage = Toast.makeText(context, error, duration);
             errorMessage.show();
 
-        }
+        }*/
 
     }
 }

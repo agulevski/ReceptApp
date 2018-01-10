@@ -21,6 +21,6 @@ public interface RecipeStore {
     void deleteRecipe(Recipe recipe);
     SQLiteDatabase open() throws SQLException;
     int insertFromFile(Context context,int i) throws IOException;
-    void insertImages(Context context) throws IOException;
+    //void insertImages(Context context) throws IOException;
     void close();
 }

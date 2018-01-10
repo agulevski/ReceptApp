@@ -7,6 +7,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -37,12 +38,10 @@ public class RecipeInfoActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
             Recipe currentRecipe = datasource.getRecipe(recipe);
-            tv_title.setText(currentRecipe.getTitle().toString());
-            tv_description.setText(currentRecipe.getDescription().toString());
-            byte[] photo = datasource.getRecipeImage(recipe);
-            System.out.println("Blob 2 = " + photo);
-            ByteArrayInputStream inputStream = new ByteArrayInputStream(photo);
-            Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+            tv_title.setText(currentRecipe.getTitle());
+            tv_description.setText(currentRecipe.getDescription());
+            byte[] photo = datasource.getRecipeImage(currentRecipe.getTitle());
+            Bitmap bitmap = BitmapFactory.decodeByteArray(photo, 0, photo.length);
             iv_recipe.setImageBitmap(bitmap);
         }else{
             tv_title.setText("Hittade inte receptet");
@@ -51,5 +50,15 @@ public class RecipeInfoActivity extends AppCompatActivity {
 
 
 
+    }
+    //Kill activity on back press
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event)
+    {
+        if ((keyCode == KeyEvent.KEYCODE_BACK))
+        {
+            finish();
+        }
+        return super.onKeyDown(keyCode, event);
     }
 }

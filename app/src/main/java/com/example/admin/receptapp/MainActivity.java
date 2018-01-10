@@ -60,8 +60,8 @@ public class MainActivity extends AppCompatActivity {
         } catch (SQLiteException e) {
             e.printStackTrace();
         }
-        /*int i = DBRecipeHelper.DATABASE_VERSION;
-        if(DBRecipeHelper.DATABASE_VERSION>i)*/
+        int i = DBRecipeHelper.DATABASE_VERSION;
+        if(DBRecipeHelper.DATABASE_VERSION>i)
         initDB();
 
     }
@@ -70,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
         System.out.print("test");
         try {
             datasource.insertFromFile(this, R.raw.init);
-            datasource.insertImages(this);
+           // datasource.insertImages(this);
         } catch (IOException e) {
             e.printStackTrace();
         }

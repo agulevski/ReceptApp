@@ -23,4 +23,5 @@
     <string name="hint_description">Exempel: \n Goda chokladmuffins som passar perfekt till fredagsmyset.</string>
 
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="header">Populära recept just nu</string>
 </resources>

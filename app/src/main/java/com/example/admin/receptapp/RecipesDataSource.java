@@ -6,6 +6,7 @@ import android.content.res.AssetManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
+import android.database.sqlite.SQLiteStatement;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Log;
@@ -19,6 +20,7 @@ import java.io.InputStreamReader;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 import static android.content.ContentValues.TAG;
 
@@ -38,7 +40,8 @@ public class RecipesDataSource implements RecipeStore {
             DBRecipeHelper.COLUMN_DESCRIPTION,
             DBRecipeHelper.COLUMN_INGREDIENTS,
             DBRecipeHelper.COLUMN_INSTRUCTIONS,
-            DBRecipeHelper.COLUMN_IMAGE_BLOB};
+            DBRecipeHelper.COLUMN_IMAGE_BLOB,
+            DBRecipeHelper.COLUMN_IMAGE_BLOB_SMALL};
 
     public RecipesDataSource(Context context) {
         dbHelper = new DBRecipeHelper(context);
@@ -58,56 +61,80 @@ public class RecipesDataSource implements RecipeStore {
         int result = 0;
         //Open resource
         InputStream insertStream = context.getResources().openRawResource(resourceId);
-        BufferedReader insertReader = new BufferedReader(new InputStreamReader(insertStream));
+        Scanner insertReader = new Scanner(new InputStreamReader(insertStream));
+        //insertReader.useDelimiter("','");
+        //Compile insert statement
+        SQLiteStatement insertStatement = database.compileStatement("INSERT INTO recipes(title, description, ingredients, instructions, imgBlob, imgBlobSmall) VALUES(?, ?, ?, ?, ?, ?)");
+        int i = 0; //int to keep track of index in []fileNames arrays, same number of images in both /img/ and /img_small/
 
-        //Read init.sql line by line. First iteration gives SQLiteException because of "PRAGMA ENCODING..." being the first line in init.sql
-        while (insertReader.ready()){
-            String insertStatement = insertReader.readLine();
+        while (insertReader.hasNext()){
+            System.out.println("i = "+i);
+
+            AssetManager assetManager = context.getResources().getAssets();
+            InputStream inputStream;
+            Bitmap bitmap;
+            String[] fileNames = assetManager.list("img");
+            System.out.println(fileNames[i]);
+            String[] fileNamesSmall = assetManager.list("img_small");
+            System.out.println(fileNamesSmall[i]);
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                //Bind image in /img/ to insertStatement
+                try{
+                    inputStream = assetManager.open("img/"+fileNames[i]);
+                    if (inputStream != null)
+                        Log.d(TAG, "Inserted: " + fileNames[i]);
+                    bitmap = BitmapFactory.decodeStream(inputStream);
+                    bitmap.compress(Bitmap.CompressFormat.JPEG, 10, stream);
+                    byte[] image = stream.toByteArray();
+                    Log.d(TAG, "Image: "+ image);
+                    insertStatement.bindBlob(5, image);
+
+
+                }catch (IOException e){
+                    e.printStackTrace();
+                }
+                //Bind image in /img_small/ to insertStatement
+                try {
+                    inputStream = assetManager.open("img_small/"+fileNamesSmall[i]);
+                    if (inputStream != null)
+                        Log.d(TAG, "Inserted small image: " + fileNamesSmall[i]);
+                    bitmap = BitmapFactory.decodeStream(inputStream);
+                    bitmap.compress(Bitmap.CompressFormat.JPEG, 10, stream);
+                    byte[] image = stream.toByteArray();
+                    Log.d(TAG, "Image small: "+ image);
+                    insertStatement.bindBlob(6, image);
+                } catch (IOException e){
+                    e.printStackTrace();
+                }
+            //Bind nextLine to insertStatement
+            String line = insertReader.nextLine();
+            String details[] = line.split("','");
+            String recipeTitle = details[0];
+            insertStatement.bindString(1, recipeTitle);
+            String recipeDescription = details[1];
+            insertStatement.bindString(2, recipeDescription);
+            String recipeIngredients = details[2];
+            insertStatement.bindString(3, recipeIngredients);
+            String recipeInstructions = details[3];
+            insertStatement.bindString(4, recipeInstructions);
             try {
-                database.execSQL(insertStatement);
+                insertStatement.execute();
             }catch (SQLiteException sql){
                 sql.printStackTrace();
             }
+
             result++;
+            i++;
+
 
         }
         //Close reader
         insertReader.close();
+        //Close DB
+        database.close();
 
         return result;
     }
-    public void insertImages(Context context) throws IOException{
-      AssetManager assetManager = context.getResources().getAssets();
-      InputStream inputStream;
-      Bitmap bitmap = null;
-      String[] fileNames = assetManager.list("img");
-      ByteArrayOutputStream stream = new ByteArrayOutputStream();
-
-      for(String name : fileNames){
-          ContentValues imgValues = new ContentValues();
-          try{
-              inputStream = assetManager.open("img/"+name);
-              if (inputStream != null)
-                  Log.d(TAG, "Inserted: " + name);
-              bitmap = BitmapFactory.decodeStream(inputStream);
-              bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
-              byte[] image = stream.toByteArray();
-              Log.d(TAG, "Image: "+ image);
-              imgValues.put(DBRecipeHelper.COLUMN_IMAGE_BLOB, image);
-              database.insert(DBRecipeHelper.TABLE_RECIPES, null, imgValues);
-
-
-
-          }catch (IOException e){
-              e.printStackTrace();
-          }
-
-
-      }
-      database.close();
-    }
-
-
 
     public Recipe createRecipe(String title, String description, String ingredients, String instructions) {
         ContentValues values = new ContentValues();
@@ -183,7 +210,7 @@ public class RecipesDataSource implements RecipeStore {
         return recipe;
     }
     public byte[] getRecipeImage(CharSequence query){
-        Cursor c = database.rawQuery("SELECT "+DBRecipeHelper.COLUMN_IMAGE_BLOB+" FROM recipes WHERE "+DBRecipeHelper.COLUMN_TITLE+" = '" + query.toString()+"'", null);
+        Cursor c = database.rawQuery("SELECT "+DBRecipeHelper.COLUMN_IMAGE_BLOB+" FROM recipes WHERE "+DBRecipeHelper.COLUMN_TITLE+" LIKE '%" + query.toString()+"%'", null);
         c.moveToFirst();
         byte[] photo = c.getBlob(0);
         System.out.println("Blob 1 = " + photo);
@@ -204,5 +231,31 @@ public class RecipesDataSource implements RecipeStore {
         }
         c.close();
         return recipesByIngredients;
+    }
+
+    public List<Bitmap> getRecipeImgSmall(){
+        List<Bitmap> imgSmall = new ArrayList<>();
+        Cursor c = database.rawQuery("SELECT "+ DBRecipeHelper.COLUMN_IMAGE_BLOB_SMALL + " FROM " + DBRecipeHelper.TABLE_RECIPES, null);
+        c.moveToFirst();
+        System.out.println(c.getBlob(0));
+        while (!c.isAfterLast()){
+            byte[] img = c.getBlob(0);
+            Bitmap bitmap = BitmapFactory.decodeByteArray(img, 0, img.length);
+            imgSmall.add(bitmap);
+            c.moveToNext();
+        }
+        return imgSmall;
+    }
+    public List<String> getRecipeTitles(){
+        List<String> titles = new ArrayList<>();
+        Cursor c = database.rawQuery("SELECT "+ DBRecipeHelper.COLUMN_TITLE + " FROM " + DBRecipeHelper.TABLE_RECIPES, null);
+        c.moveToFirst();
+        System.out.println(c.getString(0));
+        while (!c.isAfterLast()){
+            String title = c.getString(0);
+            titles.add(title);
+            c.moveToNext();
+        }
+        return titles;
     }
 }

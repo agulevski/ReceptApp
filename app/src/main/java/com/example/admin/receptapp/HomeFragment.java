@@ -1,5 +1,6 @@
 package com.example.admin.receptapp;
 
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -7,15 +8,18 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.List;
 
 
 public class HomeFragment extends Fragment {
-    TextView textView;
     RecipesDataSource datasource;
+    ListView leftView, rightView;
+    TextView textView;
     ImageView imageView;
 
     public HomeFragment() {
@@ -31,6 +35,8 @@ public class HomeFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        datasource = new RecipesDataSource(getActivity());
+        SQLiteDatabase db = datasource.open();
 
     }
 
@@ -42,8 +48,14 @@ public class HomeFragment extends Fragment {
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        textView = (getView().findViewById(R.id.text));
-        //displayRecipes();
+        List<Bitmap> images = datasource.getRecipeImgSmall();
+        List<String> titles = datasource.getRecipeTitles();
+        CustomListAdapter adapter = new CustomListAdapter(getActivity(), titles, images);
+
+        leftView = (getView().findViewById(R.id.leftlist));
+        rightView = (getView().findViewById(R.id.rightlist));
+        leftView.setAdapter(adapter);
+        rightView.setAdapter(adapter);
 
 
     }
