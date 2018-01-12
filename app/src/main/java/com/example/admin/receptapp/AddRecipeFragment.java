@@ -1,7 +1,8 @@
 package com.example.admin.receptapp;
 
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -15,15 +16,20 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import java.io.ByteArrayOutputStream;
+
 import static android.app.Activity.RESULT_OK;
 
+/**
+ * This fragment is used to create a new recipe. No edittext fields can be left empty. The image field
+ * can be left empty and a default image will be used.
+ */
 
 public class AddRecipeFragment extends Fragment {
     private RecipesDataSource datasource;
-    ImageButton photoButton, addRecipeButton;
-    EditText ingredientsText, instructionsText, titleText, descriptionText;
+    ImageButton ib_addPhoto, ib_addRecipe, ib_removePhoto;
+    EditText et_title, et_description, et_ingredients, et_instructions;
     LinearLayout linearLayout;
-    RecipesDataSource dataSource;
     public static final int PICK_IMAGE = 1;
     Uri imageUri;
 
@@ -39,7 +45,7 @@ public class AddRecipeFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         datasource = new RecipesDataSource(getActivity());
-        SQLiteDatabase db = datasource.open();
+        datasource.open();
     }
 
     @Override
@@ -49,34 +55,62 @@ public class AddRecipeFragment extends Fragment {
     }
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        //Initiate XML
         linearLayout = getView().findViewById(R.id.linearLayout);
-        ingredientsText = getView().findViewById(R.id.et_Ingredients);
-        instructionsText = getView().findViewById(R.id.et_Instructions);
-        titleText = getView().findViewById(R.id.et_Title);
-        descriptionText = getView().findViewById(R.id.et_Description);
-        photoButton = getView().findViewById(R.id.ib_SelectPhoto);
+        et_title = getView().findViewById(R.id.et_Title);
+        et_description = getView().findViewById(R.id.et_Description);
+        et_ingredients = getView().findViewById(R.id.et_Ingredients);
+        et_instructions = getView().findViewById(R.id.et_Instructions);
+        ib_addPhoto = getView().findViewById(R.id.ib_SelectPhoto);
+        ib_removePhoto = getView().findViewById(R.id.ib_removePhoto);
 
-        photoButton.setOnClickListener(new View.OnClickListener() {
+        ib_addPhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 selectImage(view);
             }
         });
-        addRecipeButton = getView().findViewById(R.id.ib_AddRecipe);
-        addRecipeButton.setOnClickListener(new View.OnClickListener() {
+        ib_removePhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Get field values and call createRecipe method
-                if(titleText.getText().toString().equals("") || descriptionText.getText().toString().equals("") || ingredientsText.getText().toString().equals("") || instructionsText.getText().toString().equals("")) {
+                //Set ib_addPhoto back to original photo
+                ib_addPhoto.setScaleType(ImageView.ScaleType.CENTER);
+                ib_addPhoto.setImageResource(R.drawable.ic_photo_camera_black_36dp);
+
+            }
+        });
+        ib_addRecipe = getView().findViewById(R.id.ib_AddRecipe);
+        ib_addRecipe.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //Get edittext values and call createRecipe method if none are empty
+                if(isEmpty(et_title) || isEmpty(et_description) || isEmpty(et_ingredients) || isEmpty(et_description)) {
                     Toast.makeText(getActivity().getApplicationContext(), "Fyll i alla fält först", Toast.LENGTH_LONG).show();
                 }else{
-                    Recipe recipe = datasource.createRecipe(titleText.getText().toString(), descriptionText.getText().toString(), ingredientsText.getText().toString(), instructionsText.getText().toString());
-                    Toast.makeText(getActivity().getApplicationContext(), recipe.getTitle(), Toast.LENGTH_LONG).show();
+                    //Get chosen image (that is set on imagebutton)
+                    Bitmap bitmap = ((BitmapDrawable)ib_addPhoto.getDrawable()).getBitmap();
+                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+                    byte[] photo = stream.toByteArray();
+
+                    //Resize chosen image to 500x223px to use in homefragment & favoritesfragment
+                    Bitmap bitmapSmall = ((BitmapDrawable)ib_addPhoto.getDrawable()).getBitmap();
+                    ByteArrayOutputStream streamSmall = new ByteArrayOutputStream();
+                    bitmapSmall = Bitmap.createScaledBitmap(bitmapSmall, 500, 223, false );
+                    bitmapSmall.compress(Bitmap.CompressFormat.JPEG, 100, streamSmall);
+                    byte[] photoSmall = streamSmall.toByteArray();
+
+                    //Create new recipe, default image is inserted if none is chosen
+                    Recipe recipe = datasource.createRecipe(et_title.getText().toString(), et_description.getText().toString(), et_ingredients.getText().toString(), et_instructions.getText().toString(), photo, photoSmall);
+                    //Toast with title of created recipe
+                    Toast.makeText(getActivity().getApplicationContext(), "Skapade nytt recept: " +recipe.getTitle(), Toast.LENGTH_LONG).show();
                 }
             }
         });
 
+
     }
+    //Let user select image from storage
     public void selectImage(View view){
         Intent getIntent = new Intent(Intent.ACTION_GET_CONTENT);
         getIntent.setType("image/*");
@@ -89,16 +123,23 @@ public class AddRecipeFragment extends Fragment {
 
         startActivityForResult(chooserIntent, PICK_IMAGE);
     }
-
+    //Display chosen image on ib_addPhoto
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data){
         super.onActivityResult(requestCode, resultCode, data);
         if(resultCode == RESULT_OK && requestCode == PICK_IMAGE){
             imageUri = data.getData();
-            photoButton.setImageURI(imageUri);
-            photoButton.setScaleType(ImageView.ScaleType.FIT_XY);
+            ib_addPhoto.setImageURI(imageUri);
+            ib_addPhoto.setScaleType(ImageView.ScaleType.FIT_XY);
         }
 
+    }
+    //Check if an edittext is empty
+    private boolean isEmpty(EditText etText) {
+        if (etText.getText().toString().trim().length() > 0)
+            return false;
+
+        return true;
     }
 
 

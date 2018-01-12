@@ -38,6 +38,7 @@
                     android:layout_alignParentStart="true"
                     android:layout_below="@+id/tv_Title"
                     android:ems="10"
+                    android:maxLength="50"
                     android:hint="@string/hint_title"
                     android:inputType="textPersonName"
                     android:textSize="14sp" />
@@ -60,6 +61,7 @@
                     android:layout_alignParentStart="true"
                     android:layout_below="@+id/tv_Description"
                     android:ems="10"
+                    android:maxLength="200"
                     android:hint="@string/hint_description"
                     android:inputType="textCapSentences|textMultiLine"
                     android:textSize="14sp" />
@@ -82,6 +84,7 @@
                     android:layout_alignParentStart="true"
                     android:layout_below="@+id/tv_Ingredients"
                     android:ems="10"
+                    android:maxLength="500"
                     android:hint="@string/hint_ingredients"
                     android:inputType="textCapSentences|textMultiLine"
                     android:textSize="14sp" />
@@ -93,7 +96,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentStart="true"
                     android:layout_below="@+id/et_Ingredients"
-                    android:hint="@string/instructions"
+                    android:text="@string/instructions"
                     android:textSize="18sp"
                     android:textStyle="bold" />
 
@@ -105,6 +108,7 @@
                     android:layout_alignParentStart="true"
                     android:layout_below="@+id/tvInstructions"
                     android:ems="10"
+                    android:maxLength="500"
                     android:hint="@string/hint_instructions"
                     android:inputType="textCapSentences|textMultiLine"
                     android:textSize="14sp" />
@@ -116,7 +120,7 @@
                     android:layout_below="@+id/et_Instructions"
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="45dp"
-                    android:src="@android:drawable/ic_menu_camera" />
+                    android:src="@drawable/ic_photo_camera_black_36dp" />
 
                 <ImageButton
                     android:id="@+id/ib_AddRecipe"
@@ -125,8 +129,27 @@
                     android:layout_alignParentStart="true"
                     android:layout_below="@+id/ib_SelectPhoto"
                     android:layout_marginTop="14dp"
-                    android:background="@null"
                     android:src="@drawable/ic_action_addrecipe" />
+
+                <ImageButton
+                    android:id="@+id/ib_removePhoto"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignEnd="@+id/ib_SelectPhoto"
+                    android:layout_below="@+id/et_Instructions"
+                    android:layout_marginEnd="9dp"
+                    android:background="@null"
+                    android:src="@android:drawable/ic_delete" />
+
+                <TextView
+                    android:id="@+id/tv_photo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@+id/ib_removePhoto"
+                    android:layout_alignParentStart="true"
+                    android:text="@string/photo"
+                    android:textSize="18sp"
+                    android:textStyle="bold"/>
 
             </RelativeLayout>
         </ScrollView>

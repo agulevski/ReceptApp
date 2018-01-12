@@ -1,7 +1,6 @@
 package com.example.admin.receptapp;
 
-import android.content.Intent;
-import android.database.sqlite.SQLiteException;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -9,22 +8,29 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.Window;
 
-import java.io.IOException;
-
+/**
+ * This activity displays a bottom navigation bar and inflates the fragment HomeFragment onCreate.
+ * The bottom navigation bar uses navigation_items.xml found in res/menu/ as resource.
+ * Fragments HomeFragment, SearchFragment, AddRecipeFragment, and FavoritesFragment are all accessed
+ * through this bottom navigation bar.
+ * MainActivity also creates an instance of DBRecipeHelper to create the database if it does not exist,
+ * or if it exists and the database version has been updated.
+ */
 public class MainActivity extends AppCompatActivity {
-    private RecipesDataSource datasource;
     BottomNavigationView bottomNavigationView;
+    private SQLiteDatabase database;
+    private DBRecipeHelper dbHelper;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
 
-        bottomNavigationView = (BottomNavigationView) (findViewById(R.id.navigation));
+        bottomNavigationView = (findViewById(R.id.navigation));
 
+        //Initiate bottomnavigationview
         bottomNavigationView.setOnNavigationItemSelectedListener
                 (new BottomNavigationView.OnNavigationItemSelectedListener() {
                     @Override
@@ -56,44 +62,11 @@ public class MainActivity extends AppCompatActivity {
         transaction.replace(R.id.frame_layout, HomeFragment.newInstance());
         transaction.commit();
 
-        datasource = new RecipesDataSource(this);
-        try {
-            datasource.open();
-        } catch (SQLiteException e) {
-            e.printStackTrace();
-        }
-        int i = DBRecipeHelper.DATABASE_VERSION;
-        if(DBRecipeHelper.DATABASE_VERSION>i)
-        initDB();
+        //Create DB if it does not exist or version is updated
+        dbHelper = new DBRecipeHelper(this);
 
     }
 
-    public void initDB(){
-        System.out.print("test");
-        try {
-            datasource.insertFromFile(this, R.raw.init);
-           // datasource.insertImages(this);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-    }
-
-    @Override
-    protected void onResume() {
-        try {
-            datasource.open();
-        } catch (SQLiteException e) {
-            e.printStackTrace();
-        }
-        super.onResume();
-    }
-
-    @Override
-    protected void onPause() {
-        datasource.close();
-        super.onPause();
-    }
 
 
 }

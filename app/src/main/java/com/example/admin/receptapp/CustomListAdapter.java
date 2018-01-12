@@ -12,7 +12,8 @@ import android.widget.TextView;
 import java.util.List;
 
 /**
- * Created by Alexanders on 2018-01-10.
+ * CustomListAdapter containing an imageview and a textview in each row. Used in HomeFragment and
+ * FavoritesFragment. Uses xml file listview.xml.
  */
 
 public class CustomListAdapter extends ArrayAdapter<String> {
@@ -31,8 +32,8 @@ public class CustomListAdapter extends ArrayAdapter<String> {
         LayoutInflater inflater=context.getLayoutInflater();
         View rowView=inflater.inflate(R.layout.listview, null,true);
 
-        TextView txtTitle = (TextView) rowView.findViewById(R.id.itemname);
-        ImageView imageView = (ImageView) rowView.findViewById(R.id.icon);
+        ImageView imageView = rowView.findViewById(R.id.iv_icon);
+        TextView txtTitle = rowView.findViewById(R.id.tv_itemname);
 
         txtTitle.setText(itemname.get(position));
         imageView.setImageBitmap(image.get(position));

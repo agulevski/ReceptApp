@@ -1,7 +1,6 @@
 package com.example.admin.receptapp;
 
 /**
- * Created by admin on 2017-11-13.
  *
  * Contains parameters for a Recipe and overrides toString();
  */

@@ -1,8 +1,6 @@
 package com.example.admin.receptapp;
 
-import android.content.Context;
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -14,10 +12,12 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.SearchView;
-import android.widget.Toast;
-
 import java.util.List;
-
+/**
+ *
+ * Lets the user search for recipes by query.
+ * It displays all recipes matching the query in a listview.
+ */
 
 public class SearchFragment extends Fragment {
     private RecipesDataSource datasource;
@@ -36,7 +36,7 @@ public class SearchFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         datasource = new RecipesDataSource(getActivity());
-        SQLiteDatabase db = datasource.open();
+        datasource.open();
     }
 
     @Override
@@ -46,6 +46,7 @@ public class SearchFragment extends Fragment {
     }
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        //Initiate views
         imageButton = (getView().findViewById(R.id.imageButton));
         imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -66,21 +67,14 @@ public class SearchFragment extends Fragment {
         });
 
     }
+    //Gets query from searchview and queries DB for recipes with "LIKE" and fills listview. Displays all if query is empty
     public void handleInput(View view){
         inputView = (getView().findViewById(R.id.searchView));
         CharSequence inputStatement = inputView.getQuery();
-        //if(inputStatement!= "") {
-            List<String> foundRecipes = datasource.getRecipeByIngredients(inputStatement);
-            ArrayAdapter<String> adapter = new ArrayAdapter<String> (getActivity(), android.R.layout.simple_list_item_1, foundRecipes);
-            listView.setAdapter(adapter);
-        /*}else{
-            Context context = getActivity();
-            CharSequence error = "Skriv in en ingrediens först";
-            int duration = Toast.LENGTH_SHORT;
-            Toast errorMessage = Toast.makeText(context, error, duration);
-            errorMessage.show();
+        List<String> foundRecipes = datasource.getRecipeByIngredients(inputStatement);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String> (getActivity(), android.R.layout.simple_list_item_1, foundRecipes);
+        listView.setAdapter(adapter);
 
-        }*/
 
     }
 }

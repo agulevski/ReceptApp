@@ -8,7 +8,7 @@
     tools:context="com.example.admin.receptapp.HomeFragment">
 
     <TextView
-        android:id="@+id/header"
+        android:id="@+id/tv_header"
         android:layout_width="match_parent"
         android:layout_height="80dp"
         android:layout_weight="1"
@@ -23,7 +23,7 @@
         android:orientation="horizontal">
 
         <ListView
-            android:id="@+id/leftlist"
+            android:id="@+id/lv_leftlist"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1">
@@ -31,7 +31,7 @@
         </ListView>
 
         <ListView
-            android:id="@+id/rightlist"
+            android:id="@+id/lv_rightlist"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1">
