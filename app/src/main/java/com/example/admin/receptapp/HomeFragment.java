@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -50,16 +51,34 @@ public class HomeFragment extends Fragment {
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        List<Bitmap> images = datasource.getRecipeImgSmall();
-        List<String> titles = datasource.getRecipeTitles();
-        CustomListAdapter adapter = new CustomListAdapter(getActivity(), titles, images);
-        //TODO a separate adapter for rightView
+        //Get number of rows in recipes
+        long count = datasource.getRecipesCount();
+        int indexCount = (int) count;
 
+        //Get all small images for all recipes in a list
+        List<Bitmap> images = datasource.getRecipeImgSmall();
+        //Split list into two new lists that each contain half of the images
+        List<Bitmap> firstHalfImage = images.subList(0, indexCount/2);
+        List<Bitmap> secondHalfImage = images.subList(indexCount/2+1, indexCount);
+
+        //Get all titles for all recipes in a list
+        List<String> titles = datasource.getRecipeTitles();
+        //Split list into two new lists that each contain half of the titles
+        List<String> firstHalfTitle = titles.subList(0, indexCount/2);
+        List<String> secondHalfTitle = titles.subList(indexCount/2+1, indexCount);
+
+        //Create two custom adapters, one for each listview
+        CustomListAdapter leftAdapter = new CustomListAdapter(getActivity(), firstHalfTitle, firstHalfImage);
+        CustomListAdapter rightAdapter = new CustomListAdapter(getActivity(), secondHalfTitle, secondHalfImage);
+
+        //Initiate XML
         leftView = (getView().findViewById(R.id.lv_leftlist));
         rightView = (getView().findViewById(R.id.lv_rightlist));
-        leftView.setAdapter(adapter);
-        rightView.setAdapter(adapter);
+        //Attach adapters
+        leftView.setAdapter(leftAdapter);
+        rightView.setAdapter(rightAdapter);
 
+        //Set listeners for both lists to start RecipeInfoActivity with clicked item
         leftView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {

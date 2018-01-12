@@ -36,6 +36,8 @@ public interface RecipeStore {
     boolean isFavorite(int id);
     //Takes recipe parameters and inserts a new row in recipes table
     Recipe createRecipe(String title, String description, String ingredients, String instructions, byte[] photo, byte[] photoSmall);
+    //Returns number of rows in recipes
+    long getRecipesCount();
     //Opens the database
     SQLiteDatabase open() throws SQLException;
     //Closes the database

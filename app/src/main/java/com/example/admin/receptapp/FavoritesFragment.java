@@ -16,6 +16,7 @@ import java.util.List;
 /**
  * This fragment shows a list of all recipes that have been saved as favorite. To remove or add
  * a recipe as favorite the user must click the button in RecipeInfoActivity.
+ * Screen will be empty if no favorites have been added.
  */
 
 public class FavoritesFragment extends Fragment {

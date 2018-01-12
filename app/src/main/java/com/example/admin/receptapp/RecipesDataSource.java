@@ -3,6 +3,7 @@ package com.example.admin.receptapp;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -209,7 +210,11 @@ public class RecipesDataSource implements RecipeStore {
             return true;
         }
 
+    }
 
+    public long getRecipesCount() {
+        long count  = DatabaseUtils.queryNumEntries(database, DBRecipeHelper.TABLE_RECIPES);
+        return count;
     }
 
 }
