@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.method.ScrollingMovementMethod;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageButton;
@@ -33,7 +34,6 @@ public class RecipeInfoActivity extends AppCompatActivity {
         tv_instructions = (findViewById(R.id.tv_instructions));
         iv_recipe = (findViewById(R.id.iv_recipe));
         ib_favorite = (findViewById(R.id.ib_favorite));
-
 
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
