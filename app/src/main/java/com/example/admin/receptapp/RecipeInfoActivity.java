@@ -21,7 +21,7 @@ import android.widget.TextView;
 public class RecipeInfoActivity extends AppCompatActivity {
     TextView tv_title, tv_description, tv_ingredients, tv_instructions;
     ImageView iv_recipe;
-    ImageButton ib_favorite;
+    ImageButton ib_favorite, ib_email;
     private RecipesDataSource datasource;
 
     @Override
@@ -34,6 +34,7 @@ public class RecipeInfoActivity extends AppCompatActivity {
         tv_instructions = (findViewById(R.id.tv_instructions));
         iv_recipe = (findViewById(R.id.iv_recipe));
         ib_favorite = (findViewById(R.id.ib_favorite));
+        ib_email = (findViewById(R.id.ib_email));
 
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
@@ -72,6 +73,18 @@ public class RecipeInfoActivity extends AppCompatActivity {
                     datasource.deleteFavorite(currentRecipe.getId());
                     ib_favorite.setImageResource(R.drawable.ic_favorite_grey_600_24dp);
                 }
+            }
+        });
+
+        ib_email.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), EmailActivity.class);
+                intent.putExtra("title", tv_title.getText());
+                intent.putExtra("description", tv_description.getText());
+                intent.putExtra("ingredients", tv_ingredients.getText());
+                intent.putExtra("instructions", tv_instructions.getText());
+                startActivity(intent);
             }
         });
 
