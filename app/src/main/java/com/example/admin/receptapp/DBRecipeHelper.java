@@ -96,6 +96,7 @@ public class DBRecipeHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
+    //Inserts text data from res/raw/init.sql and image data from assets/img/ and assets/img_small/
     public int insertFromFile(SQLiteDatabase database, Context context, int resourceId) throws IOException {
         int result = 0;
         //Open resource

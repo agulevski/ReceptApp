@@ -1,10 +1,13 @@
 package com.example.admin.receptapp;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -30,6 +33,7 @@ public class AddRecipeFragment extends Fragment {
     ImageButton ib_addPhoto, ib_addRecipe, ib_removePhoto;
     EditText et_title, et_description, et_ingredients, et_instructions;
     LinearLayout linearLayout;
+    public static final int TAKE_PHOTO = 0;
     public static final int PICK_IMAGE = 1;
     Uri imageUri;
 
@@ -67,7 +71,8 @@ public class AddRecipeFragment extends Fragment {
         ib_addPhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                selectImage(view);
+                choiceDialog();
+                //selectImage(view);
             }
         });
         ib_removePhoto.setOnClickListener(new View.OnClickListener() {
@@ -111,7 +116,7 @@ public class AddRecipeFragment extends Fragment {
 
     }
     //Let user select image from storage
-    public void selectImage(View view){
+    public void selectImage(){
         Intent getIntent = new Intent(Intent.ACTION_GET_CONTENT);
         getIntent.setType("image/*");
 
@@ -123,17 +128,24 @@ public class AddRecipeFragment extends Fragment {
 
         startActivityForResult(chooserIntent, PICK_IMAGE);
     }
+
+    //Open camera
+    public void takePhoto(){
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        startActivityForResult(intent,TAKE_PHOTO);
+
+    }
+
     //Display chosen image on ib_addPhoto
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data){
-        super.onActivityResult(requestCode, resultCode, data);
-        if(resultCode == RESULT_OK && requestCode == PICK_IMAGE){
+       if(resultCode == RESULT_OK){
             imageUri = data.getData();
             ib_addPhoto.setImageURI(imageUri);
             ib_addPhoto.setScaleType(ImageView.ScaleType.FIT_XY);
         }
-
     }
+
     //Check if an edittext is empty
     private boolean isEmpty(EditText etText) {
         if (etText.getText().toString().trim().length() > 0)
@@ -141,6 +153,27 @@ public class AddRecipeFragment extends Fragment {
 
         return true;
     }
+
+    //Alertdialog with 2 choices
+    public void choiceDialog(){
+        CharSequence choices[] = new CharSequence[] {"Ta foto", "Välj från enheten"};
+
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this.getContext());
+        builder.setTitle("Välj bild");
+        builder.setItems(choices, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // the user clicked on colors[which]
+                if(which==0){
+                    takePhoto();
+                }else if (which==1){
+                    selectImage();
+                }
+            }
+        });
+        builder.show();
+    }
+
 
 
 
