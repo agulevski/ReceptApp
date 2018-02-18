@@ -140,8 +140,8 @@ public class AddRecipeFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data){
        if(resultCode == RESULT_OK){
-            imageUri = data.getData();
-            ib_addPhoto.setImageURI(imageUri);
+            Bitmap photo = (Bitmap) data.getExtras().get("data");
+            ib_addPhoto.setImageBitmap(photo);
             ib_addPhoto.setScaleType(ImageView.ScaleType.FIT_XY);
         }
     }
