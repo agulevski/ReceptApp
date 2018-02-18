@@ -36,7 +36,6 @@ public class EmailActivity extends AppCompatActivity {
     }
 
     protected void sendEmail() {
-        Log.i("Send email", "");
 
 
         Intent intent = getIntent();
@@ -45,6 +44,7 @@ public class EmailActivity extends AppCompatActivity {
         String description = (String) bundle.get("description");
         String ingredients = (String) bundle.get("ingredients");
         String instructions = (String) bundle.get("instructions");
+        String emailContent = title + "\n\n" + description + "\n\n" + ingredients + "\n\n" + instructions;
 
 
         String[] TO = {et_to.getText().toString()};
@@ -56,16 +56,18 @@ public class EmailActivity extends AppCompatActivity {
 
         emailIntent.putExtra(Intent.EXTRA_EMAIL, TO);
         emailIntent.putExtra(Intent.EXTRA_CC, CC);
-        emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Ämne");
-        emailIntent.putExtra(Intent.EXTRA_TEXT, "Test!");
+        emailIntent.putExtra(Intent.EXTRA_SUBJECT, "*Person* vill dela ett recept med dig: " +title);
+        emailIntent.putExtra(Intent.EXTRA_TEXT, emailContent);
+
+
+
 
         try {
-            startActivity(Intent.createChooser(emailIntent, "Send mail..."));
+            startActivity(Intent.createChooser(emailIntent, "Dela recept"));
             finish();
-            Log.i("Finished sending email...", "");
         } catch (android.content.ActivityNotFoundException ex) {
             Toast.makeText(EmailActivity.this,
-                    "There is no email client installed.", Toast.LENGTH_SHORT).show();
+                    "Kunde inte hitta en mailklient på enheten", Toast.LENGTH_SHORT).show();
         }
     }
 }

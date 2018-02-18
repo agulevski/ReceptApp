@@ -26,4 +26,6 @@
     <string name="header">Populära recept just nu</string>
     <string name="photo">Foto</string>
     <string name="send">Skicka</string>
+    <string name="emailto">Skicka till:</string>
+    <string name="emailcc">CC:</string>
 </resources>
